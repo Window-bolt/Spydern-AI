@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spydern AI</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: linear-gradient(135deg, #4b0082, #0000ff);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  color: white;
+}
+
+/* Header */
+header {
+  text-align: center;
+  padding: 15px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* Chat */
+#chat {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+/* Messages */
+.msg {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 70%;
+}
+
+.user {
+  background: #6a0dad;
+  align-self: flex-end;
+}
+
+.bot {
+  background: #1e90ff;
+  align-self: flex-start;
+}
+
+/* Input area */
+.input-area {
+  display: flex;
+  padding: 10px;
+  background: rgba(0,0,0,0.3);
+}
+
+input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+}
+
+button {
+  margin-left: 10px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 20px;
+  background: #00bfff;
+  color: white;
+}
+</style>
+</head>
+
+<body>
+
+<header>🕷️ Spydern AI</header>
+
+<div id="chat"></div>
+
+<div class="input-area">
+  <input id="input" placeholder="Ask anything...">
+  <button onclick="send()">Send</button>
+</div>
+
+<script>
+async function send() {
+  let input = document.getElementById("input");
+  let chat = document.getElementById("chat");
+
+  let message = input.value;
+  if (!message) return;
+
+  chat.innerHTML += `<div class="msg user">You: ${message}</div>`;
+
+  let response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Authorization": "Bearer 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",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      model: "meta-llama/llama-3-8b-instruct",
+      messages: [{ role: "user", content: message }]
+    })
+  });
+
+  let data = await response.json();
+  let reply = data.choices[0].message.content;
+
+  chat.innerHTML += `<div class="msg bot">Spydern: ${reply}</div>`;
+
+  chat.scrollTop = chat.scrollHeight;
+  input.value = "";
+}
+</script>
+
+</body>
+</html>
