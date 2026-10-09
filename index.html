@@ -1,121 +1,486 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Spydern AI</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#00d9ff">
+  <title>Spider-N AI</title>
+  <style>
+    :root {
+      --bg-purple: #0b0726;
+      --panel-purple: #170d42;
+      --core-color: #00d9ff; /* Blue for Spider-N */
+      --text-glow: #80e5ff;
+    }
 
-<style>
-body {
-  margin: 0;
-  font-family: Arial;
-  background: linear-gradient(135deg, #4b0082, #0000ff);
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  color: white;
-}
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-purple);
+      color: #ffffff;
+      font-family: 'Segoe UI', Roboto, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
 
-/* Header */
-header {
-  text-align: center;
-  padding: 15px;
-  font-size: 20px;
-  font-weight: bold;
-}
+    /* HEADER & HAMBURGER MENU */
+    header {
+      width: 100%;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(23, 13, 66, 0.9);
+      border-bottom: 2px solid #00d9ff;
+      box-shadow: 0 0 15px rgba(0, 217, 255, 0.4);
+      box-sizing: border-box;
+    }
 
-/* Chat */
-#chat {
-  flex: 1;
-  overflow-y: auto;
-  padding: 10px;
-}
+    .title {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: var(--text-glow);
+      text-shadow: 0 0 8px var(--text-glow);
+    }
 
-/* Messages */
-.msg {
-  margin: 10px 0;
-  padding: 10px;
-  border-radius: 10px;
-  max-width: 70%;
-}
+    .menu-btn {
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: var(--text-glow);
+    }
 
-.user {
-  background: #6a0dad;
-  align-self: flex-end;
-}
+    /* SIDE DRAWER MENU */
+    .drawer {
+      position: fixed;
+      top: 0;
+      right: -260px;
+      width: 250px;
+      height: 100%;
+      background: var(--panel-purple);
+      border-left: 2px solid var(--text-glow);
+      transition: 0.3s ease-in-out;
+      z-index: 999;
+      padding: 20px;
+      box-shadow: -5px 0 20px rgba(0,0,0,0.8);
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
 
-.bot {
-  background: #1e90ff;
-  align-self: flex-start;
-}
+    .drawer.open {
+      right: 0;
+    }
 
-/* Input area */
-.input-area {
-  display: flex;
-  padding: 10px;
-  background: rgba(0,0,0,0.3);
-}
+    .drawer h3 {
+      color: var(--text-glow);
+      margin-top: 0;
+      border-bottom: 1px solid #5d1bb0;
+      padding-bottom: 10px;
+    }
 
-input {
-  flex: 1;
-  padding: 10px;
-  border-radius: 20px;
-  border: none;
-  outline: none;
-}
+    /* LOGIN OVERLAY */
+    #loginOverlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(11, 7, 38, 0.98);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+    }
 
-button {
-  margin-left: 10px;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 20px;
-  background: #00bfff;
-  color: white;
-}
-</style>
+    .login-card {
+      background: var(--panel-purple);
+      border: 2px solid var(--text-glow);
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 0 25px rgba(0, 217, 255, 0.3);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 80%;
+      max-width: 300px;
+      text-align: center;
+    }
+
+    .login-card input {
+      background: #0b0726;
+      border: 1px solid #5d1bb0;
+      border-radius: 8px;
+      padding: 10px;
+      color: #fff;
+      text-align: center;
+    }
+
+    /* ARC REACTOR CORE */
+    .reactor-container {
+      margin: 20px 0 10px 0;
+      position: relative;
+      width: 120px;
+      height: 120px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .arc-reactor {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      border: 5px solid var(--core-color);
+      box-shadow: 0 0 25px var(--core-color), inset 0 0 15px var(--core-color);
+      transition: all 0.5s ease;
+      animation: pulse 2s infinite ease-in-out;
+    }
+
+    .spider-mascot {
+      position: absolute;
+      font-size: 2.2rem;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.98); opacity: 0.8; }
+      50% { transform: scale(1.03); opacity: 1; }
+      100% { transform: scale(0.98); opacity: 0.8; }
+    }
+
+    /* CONSOLE LOG */
+    .console-box {
+      width: 90%;
+      max-width: 400px;
+      height: 130px;
+      background: rgba(11, 7, 38, 0.9);
+      border: 1px solid #5d1bb0;
+      border-radius: 10px;
+      padding: 10px;
+      overflow-y: auto;
+      font-size: 0.85rem;
+      margin-bottom: 15px;
+      box-shadow: inset 0 0 10px #000;
+      box-sizing: border-box;
+    }
+
+    /* BUTTONS */
+    .btn {
+      background: var(--panel-purple);
+      border: 1px solid var(--text-glow);
+      color: white;
+      padding: 10px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      width: 90%;
+      max-width: 400px;
+    }
+
+    /* CROSSY ROAD GAME */
+    #gameSection {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    canvas {
+      border: 2px solid var(--text-glow);
+      background: #111;
+      border-radius: 8px;
+    }
+  </style>
 </head>
-
 <body>
 
-<header>🕷️ Spydern AI</header>
+  <!-- LOGIN SYSTEM -->
+  <div id="loginOverlay">
+    <div class="login-card">
+      <div style="font-size: 3rem;">🕷️</div>
+      <h2 style="color:var(--text-glow); margin:0;">SPIDER-N AI</h2>
+      <input type="text" id="usernameInput" placeholder="Username">
+      <input type="password" id="passwordInput" placeholder="Password">
+      <p id="loginError" style="color:#ff0033; display:none; font-size:0.8rem;">Access Denied</p>
+      <button class="btn" onclick="authenticateUser()">LOGIN</button>
+    </div>
+  </div>
 
-<div id="chat"></div>
+  <!-- HEADER -->
+  <header>
+    <div class="title">SPIDER-N AI</div>
+    <div class="menu-btn" onclick="toggleDrawer()">☰</div>
+  </header>
 
-<div class="input-area">
-  <input id="input" placeholder="Ask anything...">
-  <button onclick="send()">Send</button>
-</div>
+  <!-- SIDE DRAWER MENU -->
+  <div class="drawer" id="drawer">
+    <div style="text-align:right; cursor:pointer;" onclick="toggleDrawer()">✖</div>
+    <h3>MODES & TOOLS</h3>
+    <button class="btn" onclick="setMode('normal')">💛 Normal Assistant</button>
+    <button class="btn" onclick="setMode('study')">💚 Study Mode</button>
+    <button class="btn" onclick="setMode('sports')">💙 Sports Mode</button>
+    <button class="btn" onclick="triggerError()">🔴 Test Error Mode</button>
+    <button class="btn" onclick="toggleGame()">🎮 Crossy Spider-N Game</button>
+  </div>
 
-<script>
-async function send() {
-  let input = document.getElementById("input");
-  let chat = document.getElementById("chat");
+  <!-- CORE REACTOR -->
+  <div class="reactor-container">
+    <div class="arc-reactor" id="reactor"></div>
+    <div class="spider-mascot">🕷️</div>
+  </div>
 
-  let message = input.value;
-  if (!message) return;
+  <!-- CONSOLE LOG -->
+  <div class="console-box" id="console">
+    [SPIDER-N]: Core Online. Awaiting voice or text input...
+  </div>
 
-  chat.innerHTML += `<div class="msg user">You: ${message}</div>`;
+  <!-- ACTION CONTROLS -->
+  <div class="actions">
+    <button class="btn" onclick="startVoice()">🎙️ Speak</button>
+    <label class="btn">
+      📷 Analyze Image
+      <input type="file" accept="image/*" onchange="readImageFile(event)" style="display:none;">
+    </label>
+    <label class="btn">
+      🔄 Convert Text File
+      <input type="file" accept=".txt" onchange="convertTextFile(event)" style="display:none;">
+    </label>
+    <button class="btn" onclick="simulateMediaProd()">🎬 Image/Video Generator</button>
+  </div>
 
-  let response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Authorization": "Bearer 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",
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      model: "meta-llama/llama-3-8b-instruct",
-      messages: [{ role: "user", content: message }]
-    })
-  });
+  <!-- GAME CANVAS -->
+  <div id="gameSection">
+    <h3>Crossy Spider-N</h3>
+    <canvas id="gameCanvas" width="280" height="260"></canvas>
+    <p style="font-size:0.8rem;">Tap canvas to jump Spider-N forward!</p>
+  </div>
 
-  let data = await response.json();
-  let reply = data.choices[0].message.content;
+  <script>
+    // ==========================================
+    // 🔑 ADD YOUR GROQ API KEY HERE
+    // ==========================================
+    const GROQ_API_KEY = "PASTE_YOUR_GROQ_API_KEY_HERE";
 
-  chat.innerHTML += `<div class="msg bot">Spydern: ${reply}</div>`;
+    // LOGIN AUTHENTICATION
+    const VALID_USER = "Gangi";
+    const VALID_PASS = "Gangan@999";
 
-  chat.scrollTop = chat.scrollHeight;
-  input.value = "";
-}
-</script>
+    function authenticateUser() {
+      const u = document.getElementById('usernameInput').value;
+      const p = document.getElementById('passwordInput').value;
+      if (u === VALID_USER && p === VALID_PASS) {
+        document.getElementById('loginOverlay').style.display = 'none';
+        speak("Identity verified. Welcome back, Gangi. Spider-N at your service.");
+        log("[AUTHENTICATED]: User Gangi logged in.");
+      } else {
+        document.getElementById('loginError').style.display = 'block';
+        triggerError();
+      }
+    }
 
+    // DRAWER TOGGLE
+    function toggleDrawer() {
+      document.getElementById('drawer').classList.toggle('open');
+    }
+
+    // MODE SWITCHER & CORE COLORS
+    function setMode(mode) {
+      if (mode === 'normal') {
+        document.documentElement.style.setProperty('--core-color', '#ffd700'); // Yellow
+        log("[MODE]: Switched to Normal Mode (Yellow Core).");
+        speak("Normal Mode active.");
+      } else if (mode === 'study') {
+        document.documentElement.style.setProperty('--core-color', '#00ff66'); // Green
+        log("[MODE]: Switched to Study Mode (Green Core).");
+        speak("Study Mode active. Ready for reading and summaries.");
+      } else if (mode === 'sports') {
+        document.documentElement.style.setProperty('--core-color', '#00d9ff'); // Blue
+        log("[MODE]: Switched to Sports Mode (Blue Core).");
+        speak("Sports Mode active. Telemetry and timers ready.");
+      }
+      toggleDrawer();
+    }
+
+    function triggerError() {
+      document.documentElement.style.setProperty('--core-color', '#ff0033'); // Red
+      log("[ERROR]: System alert! Core status Red.");
+      speak("Warning! Core error detected.");
+    }
+
+    function log(msg) {
+      const box = document.getElementById('console');
+      box.innerHTML += `<br>> ${msg}`;
+      box.scrollTop = box.scrollHeight;
+    }
+
+    // TEXT TO SPEECH
+    function speak(text) {
+      const sysSpeech = window.speechSynthesis;
+      sysSpeech.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.pitch = 1.2; // Slightly cute/cheerful pitch
+      utterance.rate = 1.0;
+      sysSpeech.speak(utterance);
+    }
+
+    // SPEECH TO TEXT & GROQ AI REQUEST
+    function startVoice() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        triggerError();
+        log("Speech Recognition not supported on this device.");
+        return;
+      }
+      const recognition = new SpeechRecognition();
+      log("Listening...");
+      recognition.start();
+
+      recognition.onresult = async (e) => {
+        const query = e.results[0][0].transcript;
+        log(`You: ${query}`);
+        await callGroqAI(query);
+      };
+
+      recognition.onerror = () => triggerError();
+    }
+
+    async function callGroqAI(promptText) {
+      if (!GROQ_API_KEY || GROQ_API_KEY === "PASTE_YOUR_GROQ_API_KEY_HERE") {
+        log("[SYSTEM]: Missing API Key! Add your Groq API key in index.html.");
+        speak("Boss, please add your Groq API key inside the code.");
+        return;
+      }
+
+      try {
+        const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${GROQ_API_KEY}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            model: "llama-3.1-8b-instant",
+            messages: [
+              { role: "system", content: "You are Spider-N, a cute, cheerful, witty blue spider AI assistant. Keep responses brief and friendly." },
+              { role: "user", content: promptText }
+            ]
+          })
+        });
+
+        const data = await response.json();
+        const reply = data.choices[0].message.content;
+        log(`Spider-N: ${reply}`);
+        speak(reply);
+      } catch (err) {
+        triggerError();
+        log("[API ERROR]: Failed to contact Groq servers.");
+      }
+    }
+
+    // FILE CONVERTER TOOL
+    function convertTextFile(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const content = evt.target.result;
+        // Convert to uppercase JSON format as demonstration
+        const converted = JSON.stringify({ filename: file.name, data: content.toUpperCase() });
+        
+        const blob = new Blob([converted], { type: "application/json" });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `${file.name}.json`;
+        link.click();
+        
+        log(`Converted ${file.name} to JSON format successfully!`);
+        speak("File conversion completed.");
+      };
+      reader.readAsText(file);
+    }
+
+    // IMAGE FILE READER TOOL
+    function readImageFile(e) {
+      const file = e.target.files[0];
+      if (file) {
+        log(`Loaded image file: ${file.name}`);
+        speak("Image file loaded. Scanning visual data.");
+      }
+    }
+
+    function simulateMediaProd() {
+      speak("Opening video and image generation production pipelines.");
+      log("[PRODUCTION]: Prompt sent to AI media queue.");
+    }
+
+    // CROSSY SPIDER-N GAME ENGINE
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    let spiderY = 220;
+    let score = 0;
+    let cars = [{ x: 0, y: 140, speed: 3 }, { x: 120, y: 80, speed: -4 }];
+
+    function toggleGame() {
+      const g = document.getElementById('gameSection');
+      g.style.display = g.style.display === 'flex' ? 'none' : 'flex';
+      if (g.style.display === 'flex') gameLoop();
+    }
+
+    canvas.addEventListener('click', () => {
+      spiderY -= 20;
+      score += 10;
+      if (spiderY < 20) {
+        spiderY = 220;
+        log(`Cleared round! High score: ${score}`);
+        speak("Round cleared! Great jumping, Gangi!");
+      }
+    });
+
+    function gameLoop() {
+      if (document.getElementById('gameSection').style.display !== 'flex') return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Road background
+      ctx.fillStyle = '#222';
+      ctx.fillRect(0, 60, 280, 120);
+
+      // Spider-N Mascot
+      ctx.font = "20px Arial";
+      ctx.fillText("🕷️", 130, spiderY);
+
+      // Obstacles
+      ctx.fillStyle = '#ff0055';
+      cars.forEach(c => {
+        c.x += c.speed;
+        if (c.x > 280) c.x = -30;
+        if (c.x < -30) c.x = 280;
+        ctx.fillRect(c.x, c.y, 30, 20);
+
+        if (Math.abs(c.x - 130) < 20 && Math.abs(c.y - spiderY) < 15) {
+          triggerError();
+          log("Spider-N crashed! Game reset.");
+          spiderY = 220;
+        }
+      });
+
+      requestAnimationFrame(gameLoop);
+    }
+
+    // PWA SERVICE WORKER REGISTRATION
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(() => {});
+    }
+  </script>
 </body>
-</html>
+    </html>
+        
