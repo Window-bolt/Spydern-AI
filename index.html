@@ -4,20 +4,28 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#00d9ff">
-  <title>Spider-N AI</title>
+  <meta name="theme-color" content="#09021a">
+  <title>Spydern.ai</title>
   <style>
     :root {
-      --bg-purple: #0b0726;
-      --panel-purple: #170d42;
-      --core-color: #00d9ff; /* Blue for Spider-N */
-      --text-glow: #80e5ff;
+      --bg-main: #09021a;
+      --panel-bg: rgba(25, 10, 54, 0.85);
+      --core-color: #ffd700; /* Default Normal Mode Yellow */
+      --glow-color: rgba(255, 215, 0, 0.6);
+      --purple-accent: #8022ff;
+      --blue-accent: #00d9ff;
+      --green-accent: #00ff66;
+    }
+
+    * {
+      box-sizing: border-box;
+      user-select: none;
     }
 
     body {
       margin: 0;
       padding: 0;
-      background-color: var(--bg-purple);
+      background: radial-gradient(circle at center, #18083a 0%, var(--bg-main) 100%);
       color: #ffffff;
       font-family: 'Segoe UI', Roboto, sans-serif;
       display: flex;
@@ -27,67 +35,12 @@
       overflow-x: hidden;
     }
 
-    /* HEADER & HAMBURGER MENU */
-    header {
-      width: 100%;
-      padding: 15px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(23, 13, 66, 0.9);
-      border-bottom: 2px solid #00d9ff;
-      box-shadow: 0 0 15px rgba(0, 217, 255, 0.4);
-      box-sizing: border-box;
-    }
-
-    .title {
-      font-size: 1.3rem;
-      font-weight: bold;
-      color: var(--text-glow);
-      text-shadow: 0 0 8px var(--text-glow);
-    }
-
-    .menu-btn {
-      font-size: 1.8rem;
-      cursor: pointer;
-      color: var(--text-glow);
-    }
-
-    /* SIDE DRAWER MENU */
-    .drawer {
-      position: fixed;
-      top: 0;
-      right: -260px;
-      width: 250px;
-      height: 100%;
-      background: var(--panel-purple);
-      border-left: 2px solid var(--text-glow);
-      transition: 0.3s ease-in-out;
-      z-index: 999;
-      padding: 20px;
-      box-shadow: -5px 0 20px rgba(0,0,0,0.8);
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    .drawer.open {
-      right: 0;
-    }
-
-    .drawer h3 {
-      color: var(--text-glow);
-      margin-top: 0;
-      border-bottom: 1px solid #5d1bb0;
-      padding-bottom: 10px;
-    }
-
-    /* LOGIN OVERLAY */
+    /* LOGIN SCREEN */
     #loginOverlay {
       position: fixed;
       top: 0; left: 0;
       width: 100vw; height: 100vh;
-      background: rgba(11, 7, 38, 0.98);
+      background: #09021a;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -96,98 +49,173 @@
     }
 
     .login-card {
-      background: var(--panel-purple);
-      border: 2px solid var(--text-glow);
-      padding: 25px;
-      border-radius: 15px;
-      box-shadow: 0 0 25px rgba(0, 217, 255, 0.3);
+      background: var(--panel-bg);
+      border: 2px solid var(--purple-accent);
+      padding: 30px 25px;
+      border-radius: 20px;
+      box-shadow: 0 0 30px rgba(128, 34, 255, 0.4);
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      width: 80%;
-      max-width: 300px;
+      gap: 15px;
+      width: 85%;
+      max-width: 320px;
       text-align: center;
     }
 
     .login-card input {
-      background: #0b0726;
-      border: 1px solid #5d1bb0;
-      border-radius: 8px;
-      padding: 10px;
+      background: #09021a;
+      border: 1px solid var(--purple-accent);
+      border-radius: 10px;
+      padding: 12px;
       color: #fff;
+      font-size: 1rem;
       text-align: center;
+      outline: none;
     }
 
-    /* ARC REACTOR CORE */
-    .reactor-container {
-      margin: 20px 0 10px 0;
+    /* HEADER */
+    header {
+      width: 100%;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(18, 5, 42, 0.9);
+      border-bottom: 2px solid var(--purple-accent);
+      box-shadow: 0 0 15px rgba(128, 34, 255, 0.3);
+    }
+
+    .header-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: #ffffff;
+      text-shadow: 0 0 10px var(--purple-accent);
+    }
+
+    .menu-btn {
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: var(--blue-accent);
+    }
+
+    /* SIDE DRAWER MENU */
+    .drawer {
+      position: fixed;
+      top: 0; right: -280px;
+      width: 270px; height: 100%;
+      background: rgba(18, 5, 42, 0.95);
+      border-left: 2px solid var(--purple-accent);
+      transition: 0.3s ease-in-out;
+      z-index: 999;
+      padding: 25px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: -10px 0 30px rgba(0,0,0,0.8);
+    }
+
+    .drawer.open { right: 0; }
+
+    /* HOLOGRAPHIC SPIDER + ARC REACTOR HEART */
+    .hero-container {
       position: relative;
-      width: 120px;
-      height: 120px;
+      width: 220px;
+      height: 220px;
+      margin: 15px 0;
       display: flex;
       justify-content: center;
       align-items: center;
     }
 
-    .arc-reactor {
+    /* THE HEART: ARC REACTOR */
+    .arc-reactor-heart {
+      position: absolute;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      border: 4px dashed var(--core-color);
+      box-shadow: 0 0 30px var(--core-color), inset 0 0 20px var(--core-color);
+      animation: rotateCore 12s linear infinite;
+      transition: all 0.5s ease;
+    }
+
+    .arc-inner-ring {
+      position: absolute;
       width: 90px;
       height: 90px;
       border-radius: 50%;
-      border: 5px solid var(--core-color);
-      box-shadow: 0 0 25px var(--core-color), inset 0 0 15px var(--core-color);
-      transition: all 0.5s ease;
-      animation: pulse 2s infinite ease-in-out;
+      border: 3px solid var(--core-color);
+      box-shadow: 0 0 15px var(--core-color);
     }
 
-    .spider-mascot {
+    /* SEPARATE HOLOGRAPHIC SPIDER MASCOT */
+    .hologram-spider {
       position: absolute;
-      font-size: 2.2rem;
+      font-size: 3.5rem;
+      z-index: 2;
+      filter: drop-shadow(0 0 12px var(--blue-accent));
+      animation: floatHolo 3s ease-in-out infinite;
     }
 
-    @keyframes pulse {
-      0% { transform: scale(0.98); opacity: 0.8; }
-      50% { transform: scale(1.03); opacity: 1; }
-      100% { transform: scale(0.98); opacity: 0.8; }
+    .holo-beam {
+      position: absolute;
+      bottom: 25px;
+      width: 80px;
+      height: 60px;
+      background: linear-gradient(to top, var(--glow-color), transparent);
+      clip-path: polygon(20% 100%, 80% 100%, 100% 0%, 0% 0%);
+      opacity: 0.6;
+    }
+
+    @keyframes rotateCore {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes floatHolo {
+      0%, 100% { transform: translateY(-5px); }
+      50% { transform: translateY(5px); }
     }
 
     /* CONSOLE LOG */
     .console-box {
       width: 90%;
       max-width: 400px;
-      height: 130px;
-      background: rgba(11, 7, 38, 0.9);
-      border: 1px solid #5d1bb0;
-      border-radius: 10px;
-      padding: 10px;
+      height: 120px;
+      background: rgba(9, 2, 26, 0.9);
+      border: 1px solid var(--purple-accent);
+      border-radius: 12px;
+      padding: 12px;
       overflow-y: auto;
       font-size: 0.85rem;
       margin-bottom: 15px;
       box-shadow: inset 0 0 10px #000;
-      box-sizing: border-box;
     }
 
     /* BUTTONS */
     .btn {
-      background: var(--panel-purple);
-      border: 1px solid var(--text-glow);
-      color: white;
-      padding: 10px 14px;
-      border-radius: 20px;
-      font-size: 0.85rem;
+      background: var(--panel-bg);
+      border: 1px solid var(--purple-accent);
+      color: #fff;
+      padding: 10px 15px;
+      border-radius: 12px;
+      font-size: 0.9rem;
       font-weight: bold;
       cursor: pointer;
+      box-shadow: 0 0 10px rgba(128, 34, 255, 0.2);
     }
 
     .actions {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 10px;
       justify-content: center;
       width: 90%;
       max-width: 400px;
     }
 
-    /* CROSSY ROAD GAME */
+    /* GAME SECTION */
     #gameSection {
       display: none;
       flex-direction: column;
@@ -196,9 +224,9 @@
     }
 
     canvas {
-      border: 2px solid var(--text-glow);
-      background: #111;
-      border-radius: 8px;
+      border: 2px solid var(--purple-accent);
+      background: #050110;
+      border-radius: 10px;
     }
   </style>
 </head>
@@ -208,40 +236,42 @@
   <div id="loginOverlay">
     <div class="login-card">
       <div style="font-size: 3rem;">🕷️</div>
-      <h2 style="color:var(--text-glow); margin:0;">SPIDER-N AI</h2>
+      <h2 style="color:#fff; margin:0;">Spydern.ai</h2>
       <input type="text" id="usernameInput" placeholder="Username">
       <input type="password" id="passwordInput" placeholder="Password">
-      <p id="loginError" style="color:#ff0033; display:none; font-size:0.8rem;">Access Denied</p>
-      <button class="btn" onclick="authenticateUser()">LOGIN</button>
+      <p id="loginError" style="color:#ff0044; display:none; font-size:0.85rem;">Access Denied</p>
+      <button class="btn" onclick="authenticateUser()">AUTHENTICATE</button>
     </div>
   </div>
 
   <!-- HEADER -->
   <header>
-    <div class="title">SPIDER-N AI</div>
+    <div class="header-title">Spydern.ai</div>
     <div class="menu-btn" onclick="toggleDrawer()">☰</div>
   </header>
 
   <!-- SIDE DRAWER MENU -->
   <div class="drawer" id="drawer">
     <div style="text-align:right; cursor:pointer;" onclick="toggleDrawer()">✖</div>
-    <h3>MODES & TOOLS</h3>
-    <button class="btn" onclick="setMode('normal')">💛 Normal Assistant</button>
-    <button class="btn" onclick="setMode('study')">💚 Study Mode</button>
-    <button class="btn" onclick="setMode('sports')">💙 Sports Mode</button>
-    <button class="btn" onclick="triggerError()">🔴 Test Error Mode</button>
-    <button class="btn" onclick="toggleGame()">🎮 Crossy Spider-N Game</button>
+    <h3 style="color:var(--blue-accent); margin:0 0 10px 0;">SYSTEM MODES</h3>
+    <button class="btn" onclick="setMode('normal')">💛 Normal Mode (Yellow)</button>
+    <button class="btn" onclick="setMode('study')">💚 Study Mode (Green)</button>
+    <button class="btn" onclick="setMode('sports')">💙 Sports Mode (Blue)</button>
+    <button class="btn" onclick="triggerError()">🔴 Trigger Error (Red)</button>
+    <button class="btn" onclick="toggleGame()">🎮 Play Crossy Spydern</button>
   </div>
 
-  <!-- CORE REACTOR -->
-  <div class="reactor-container">
-    <div class="arc-reactor" id="reactor"></div>
-    <div class="spider-mascot">🕷️</div>
+  <!-- SEPARATE ARC REACTOR HEART & HOLOGRAPHIC SPIDER -->
+  <div class="hero-container">
+    <div class="arc-reactor-heart" id="reactorHeart"></div>
+    <div class="arc-inner-ring" id="reactorInner"></div>
+    <div class="holo-beam"></div>
+    <div class="hologram-spider">🕷️</div>
   </div>
 
   <!-- CONSOLE LOG -->
   <div class="console-box" id="console">
-    [SPIDER-N]: Core Online. Awaiting voice or text input...
+    [Spydern.ai]: System online, Gangan. Core heart pulsing normal.
   </div>
 
   <!-- ACTION CONTROLS -->
@@ -252,17 +282,17 @@
       <input type="file" accept="image/*" onchange="readImageFile(event)" style="display:none;">
     </label>
     <label class="btn">
-      🔄 Convert Text File
+      🔄 Convert File
       <input type="file" accept=".txt" onchange="convertTextFile(event)" style="display:none;">
     </label>
-    <button class="btn" onclick="simulateMediaProd()">🎬 Image/Video Generator</button>
+    <button class="btn" onclick="simulateMediaProd()">🎬 Media Studio</button>
   </div>
 
   <!-- GAME CANVAS -->
   <div id="gameSection">
-    <h3>Crossy Spider-N</h3>
-    <canvas id="gameCanvas" width="280" height="260"></canvas>
-    <p style="font-size:0.8rem;">Tap canvas to jump Spider-N forward!</p>
+    <h3>Crossy Spydern</h3>
+    <canvas id="gameCanvas" width="280" height="240"></canvas>
+    <p style="font-size:0.8rem; color:#aaa;">Tap canvas to jump forward!</p>
   </div>
 
   <script>
@@ -271,8 +301,8 @@
     // ==========================================
     const GROQ_API_KEY = "PASTE_YOUR_GROQ_API_KEY_HERE";
 
-    // LOGIN AUTHENTICATION
-    const VALID_USER = "Gangi";
+    // LOGIN AUTHENTICATION (UPDATED USERNAME TO GANGAN)
+    const VALID_USER = "Gangan";
     const VALID_PASS = "Gangan@999";
 
     function authenticateUser() {
@@ -280,8 +310,8 @@
       const p = document.getElementById('passwordInput').value;
       if (u === VALID_USER && p === VALID_PASS) {
         document.getElementById('loginOverlay').style.display = 'none';
-        speak("Identity verified. Welcome back, Gangi. Spider-N at your service.");
-        log("[AUTHENTICATED]: User Gangi logged in.");
+        speak("Identity verified. Welcome back, Gangan.");
+        log("[AUTHENTICATED]: User Gangan logged in successfully.");
       } else {
         document.getElementById('loginError').style.display = 'block';
         triggerError();
@@ -293,28 +323,32 @@
       document.getElementById('drawer').classList.toggle('open');
     }
 
-    // MODE SWITCHER & CORE COLORS
+    // MODE SWITCHER & COLOR LOGIC
     function setMode(mode) {
       if (mode === 'normal') {
         document.documentElement.style.setProperty('--core-color', '#ffd700'); // Yellow
-        log("[MODE]: Switched to Normal Mode (Yellow Core).");
-        speak("Normal Mode active.");
+        document.documentElement.style.setProperty('--glow-color', 'rgba(255, 215, 0, 0.6)');
+        log("[SYSTEM]: Normal Mode active (Yellow Core).");
+        speak("Normal Mode active, Gangan.");
       } else if (mode === 'study') {
         document.documentElement.style.setProperty('--core-color', '#00ff66'); // Green
-        log("[MODE]: Switched to Study Mode (Green Core).");
-        speak("Study Mode active. Ready for reading and summaries.");
+        document.documentElement.style.setProperty('--glow-color', 'rgba(0, 255, 102, 0.6)');
+        log("[SYSTEM]: Study Mode active (Green Core).");
+        speak("Study Mode enabled. Focus protocol online.");
       } else if (mode === 'sports') {
         document.documentElement.style.setProperty('--core-color', '#00d9ff'); // Blue
-        log("[MODE]: Switched to Sports Mode (Blue Core).");
-        speak("Sports Mode active. Telemetry and timers ready.");
+        document.documentElement.style.setProperty('--glow-color', 'rgba(0, 217, 255, 0.6)');
+        log("[SYSTEM]: Sports Mode active (Blue Core).");
+        speak("Sports Mode ready. Telemetry tracking live.");
       }
       toggleDrawer();
     }
 
     function triggerError() {
-      document.documentElement.style.setProperty('--core-color', '#ff0033'); // Red
-      log("[ERROR]: System alert! Core status Red.");
-      speak("Warning! Core error detected.");
+      document.documentElement.style.setProperty('--core-color', '#ff0044'); // Red
+      document.documentElement.style.setProperty('--glow-color', 'rgba(255, 0, 68, 0.6)');
+      log("[ERROR]: Core integrity failure! State set to Red.");
+      speak("Warning! Error detected in core reactor.");
     }
 
     function log(msg) {
@@ -328,7 +362,7 @@
       const sysSpeech = window.speechSynthesis;
       sysSpeech.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.pitch = 1.2; // Slightly cute/cheerful pitch
+      utterance.pitch = 1.1;
       utterance.rate = 1.0;
       sysSpeech.speak(utterance);
     }
@@ -338,7 +372,7 @@
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       if (!SpeechRecognition) {
         triggerError();
-        log("Speech Recognition not supported on this device.");
+        log("Speech Recognition unavailable on this browser.");
         return;
       }
       const recognition = new SpeechRecognition();
@@ -347,7 +381,7 @@
 
       recognition.onresult = async (e) => {
         const query = e.results[0][0].transcript;
-        log(`You: ${query}`);
+        log(`Gangan: ${query}`);
         await callGroqAI(query);
       };
 
@@ -356,8 +390,8 @@
 
     async function callGroqAI(promptText) {
       if (!GROQ_API_KEY || GROQ_API_KEY === "PASTE_YOUR_GROQ_API_KEY_HERE") {
-        log("[SYSTEM]: Missing API Key! Add your Groq API key in index.html.");
-        speak("Boss, please add your Groq API key inside the code.");
+        log("[SYSTEM]: Please add your Groq API key inside index.html.");
+        speak("Boss, please add your Groq API key in the script.");
         return;
       }
 
@@ -371,7 +405,7 @@
           body: JSON.stringify({
             model: "llama-3.1-8b-instant",
             messages: [
-              { role: "system", content: "You are Spider-N, a cute, cheerful, witty blue spider AI assistant. Keep responses brief and friendly." },
+              { role: "system", content: "You are Spydern.ai, a cheerful, witty, and loyal holographic spider assistant to Gangan. Keep answers concise." },
               { role: "user", content: promptText }
             ]
           })
@@ -379,23 +413,22 @@
 
         const data = await response.json();
         const reply = data.choices[0].message.content;
-        log(`Spider-N: ${reply}`);
+        log(`Spydern.ai: ${reply}`);
         speak(reply);
       } catch (err) {
         triggerError();
-        log("[API ERROR]: Failed to contact Groq servers.");
+        log("[API ERROR]: Connection to Groq network failed.");
       }
     }
 
-    // FILE CONVERTER TOOL
+    // FILE CONVERTER
     function convertTextFile(e) {
       const file = e.target.files[0];
       if (!file) return;
       const reader = new FileReader();
       reader.onload = function(evt) {
         const content = evt.target.result;
-        // Convert to uppercase JSON format as demonstration
-        const converted = JSON.stringify({ filename: file.name, data: content.toUpperCase() });
+        const converted = JSON.stringify({ filename: file.name, textData: content });
         
         const blob = new Blob([converted], { type: "application/json" });
         const link = document.createElement('a');
@@ -403,32 +436,32 @@
         link.download = `${file.name}.json`;
         link.click();
         
-        log(`Converted ${file.name} to JSON format successfully!`);
-        speak("File conversion completed.");
+        log(`File converted: ${file.name} -> JSON`);
+        speak("File format conversion complete.");
       };
       reader.readAsText(file);
     }
 
-    // IMAGE FILE READER TOOL
+    // IMAGE READER
     function readImageFile(e) {
       const file = e.target.files[0];
       if (file) {
-        log(`Loaded image file: ${file.name}`);
-        speak("Image file loaded. Scanning visual data.");
+        log(`Analyzing visual buffer: ${file.name}`);
+        speak("Visual analysis loaded into memory.");
       }
     }
 
     function simulateMediaProd() {
-      speak("Opening video and image generation production pipelines.");
-      log("[PRODUCTION]: Prompt sent to AI media queue.");
+      speak("Production pipeline ready for video and image tasks.");
+      log("[STUDIO]: Prompt registered in media queue.");
     }
 
-    // CROSSY SPIDER-N GAME ENGINE
+    // GAME ENGINE
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
-    let spiderY = 220;
+    let spydernY = 200;
     let score = 0;
-    let cars = [{ x: 0, y: 140, speed: 3 }, { x: 120, y: 80, speed: -4 }];
+    let cars = [{ x: 0, y: 130, speed: 3 }, { x: 140, y: 70, speed: -4 }];
 
     function toggleGame() {
       const g = document.getElementById('gameSection');
@@ -437,12 +470,12 @@
     }
 
     canvas.addEventListener('click', () => {
-      spiderY -= 20;
+      spydernY -= 20;
       score += 10;
-      if (spiderY < 20) {
-        spiderY = 220;
-        log(`Cleared round! High score: ${score}`);
-        speak("Round cleared! Great jumping, Gangi!");
+      if (spydernY < 20) {
+        spydernY = 200;
+        log(`Round cleared! Score: ${score}`);
+        speak("Level cleared! Nice moves, Gangan!");
       }
     });
 
@@ -450,37 +483,33 @@
       if (document.getElementById('gameSection').style.display !== 'flex') return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Road background
-      ctx.fillStyle = '#222';
-      ctx.fillRect(0, 60, 280, 120);
+      ctx.fillStyle = '#180a30';
+      ctx.fillRect(0, 50, 280, 120);
 
-      // Spider-N Mascot
-      ctx.font = "20px Arial";
-      ctx.fillText("🕷️", 130, spiderY);
+      ctx.font = "22px Arial";
+      ctx.fillText("🕷️", 130, spydernY);
 
-      // Obstacles
       ctx.fillStyle = '#ff0055';
       cars.forEach(c => {
         c.x += c.speed;
         if (c.x > 280) c.x = -30;
         if (c.x < -30) c.x = 280;
-        ctx.fillRect(c.x, c.y, 30, 20);
+        ctx.fillRect(c.x, c.y, 30, 18);
 
-        if (Math.abs(c.x - 130) < 20 && Math.abs(c.y - spiderY) < 15) {
+        if (Math.abs(c.x - 130) < 20 && Math.abs(c.y - spydernY) < 15) {
           triggerError();
-          log("Spider-N crashed! Game reset.");
-          spiderY = 220;
+          log("Crossy Spydern crashed! Resetting...");
+          spydernY = 200;
         }
       });
 
       requestAnimationFrame(gameLoop);
     }
 
-    // PWA SERVICE WORKER REGISTRATION
+    // SERVICE WORKER REGISTER
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('sw.js').catch(() => {});
     }
   </script>
 </body>
-    </html>
-        
+</html>
