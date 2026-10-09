@@ -1,4 +1,4 @@
-const CACHE_NAME = 'spider-n-v1';
+const CACHE_NAME = 'spydern-ai-v2';
 const ASSETS = [
   './',
   './index.html',
