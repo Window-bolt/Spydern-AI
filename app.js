@@ -1,5 +1,5 @@
 // ==========================================
-// APP LOGIC & CORE ENGINE
+// APP LOGIC & CORE ENGINE (GOOGLE GEMINI)
 // ==========================================
 
 const VALID_USER = "Gangan";
@@ -82,7 +82,7 @@ function speak(text) {
     sysSpeech.speak(utterance);
 }
 
-// SPEECH RECOGNITION & GROQ AI
+// SPEECH RECOGNITION & GOOGLE GEMINI AI
 function startVoice() {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
@@ -97,43 +97,53 @@ function startVoice() {
     recognition.onresult = async (e) => {
         const query = e.results[0][0].transcript;
         log(`Gangan: ${query}`);
-        await callGroqAI(query);
+        await callGeminiAI(query);
     };
 
     recognition.onerror = () => triggerError();
 }
 
-async function callGroqAI(promptText) {
+async function callGeminiAI(promptText) {
     const apiKey = getStoredApiKey();
     if (!apiKey) {
-        log("[SYSTEM]: No API key detected. Please log in with your API key.");
-        speak("Boss, please enter your API key during login.");
+        log("[SYSTEM]: No API key detected. Please log in with your Google AI Studio API key.");
+        speak("Boss, please enter your Google API key during login.");
         return;
     }
 
+    // Using Google Gemini Flash endpoint
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+
     try {
-        const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+        const response = await fetch(url, {
             method: "POST",
             headers: {
-                "Authorization": `Bearer ${apiKey}`,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                model: "llama-3.1-8b-instant",
-                messages: [
-                    { role: "system", content: "You are Spydern.ai, a cheerful, witty, and loyal holographic spider assistant to Gangan. Keep answers concise." },
-                    { role: "user", content: promptText }
+                contents: [
+                    {
+                        parts: [
+                            { text: "You are Spydern.ai, a cheerful, witty, and loyal holographic spider assistant to Gangan. Keep answers concise. User prompt: " + promptText }
+                        ]
+                    }
                 ]
             })
         });
 
         const data = await response.json();
-        const reply = data.choices[0].message.content;
-        log(`Spydern.ai: ${reply}`);
-        speak(reply);
+        
+        if (data.candidates && data.candidates[0].content.parts[0].text) {
+            const reply = data.candidates[0].content.parts[0].text;
+            log(`Spydern.ai: ${reply}`);
+            speak(reply);
+        } else {
+            throw new Error("Invalid API response structure");
+        }
     } catch (err) {
         triggerError();
-        log("[API ERROR]: Connection to Groq network failed.");
+        log("[API ERROR]: Connection to Google Gemini failed.");
+        speak("Communication error with Google network.");
     }
 }
 
