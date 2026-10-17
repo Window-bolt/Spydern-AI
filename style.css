@@ -1,0 +1,220 @@
+:root {
+  --bg-main: #09021a;
+  --panel-bg: rgba(25, 10, 54, 0.85);
+  --core-color: #ffd700; /* Default Normal Mode Yellow/Gold */
+  --glow-color: rgba(255, 215, 0, 0.6);
+  --purple-accent: #8022ff;
+  --blue-accent: #00d9ff;
+  --green-accent: #00ff66;
+  --orange-accent: #ff6600;
+}
+
+* {
+  box-sizing: border-box;
+  user-select: none;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: radial-gradient(circle at center, #18083a 0%, var(--bg-main) 100%);
+  color: #ffffff;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* LOGIN SCREEN */
+#loginOverlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: #09021a;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+}
+
+.login-card {
+  background: var(--panel-bg);
+  border: 2px solid var(--purple-accent);
+  padding: 30px 25px;
+  border-radius: 20px;
+  box-shadow: 0 0 30px rgba(128, 34, 255, 0.4);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 85%;
+  max-width: 320px;
+  text-align: center;
+}
+
+.login-card input {
+  background: #09021a;
+  border: 1px solid var(--purple-accent);
+  border-radius: 10px;
+  padding: 12px;
+  color: #fff;
+  font-size: 1rem;
+  text-align: center;
+  outline: none;
+}
+
+/* HEADER */
+header {
+  width: 100%;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(18, 5, 42, 0.9);
+  border-bottom: 2px solid var(--purple-accent);
+  box-shadow: 0 0 15px rgba(128, 34, 255, 0.3);
+}
+
+.header-title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #ffffff;
+  text-shadow: 0 0 10px var(--purple-accent);
+}
+
+.menu-btn {
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: var(--blue-accent);
+}
+
+/* SIDE DRAWER MENU */
+.drawer {
+  position: fixed;
+  top: 0; right: -280px;
+  width: 270px; height: 100%;
+  background: rgba(18, 5, 42, 0.95);
+  border-left: 2px solid var(--purple-accent);
+  transition: 0.3s ease-in-out;
+  z-index: 999;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: -10px 0 30px rgba(0,0,0,0.8);
+}
+
+.drawer.open { right: 0; }
+
+/* HOLOGRAPHIC SPIDER + ARC REACTOR HEART */
+.hero-container {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  margin: 15px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.arc-reactor-heart {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  border: 4px dashed var(--core-color);
+  box-shadow: 0 0 30px var(--core-color), inset 0 0 20px var(--core-color);
+  animation: rotateCore 12s linear infinite;
+  transition: all 0.5s ease;
+}
+
+.arc-inner-ring {
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 3px solid var(--core-color);
+  box-shadow: 0 0 15px var(--core-color);
+}
+
+.hologram-spider {
+  position: absolute;
+  font-size: 3.5rem;
+  z-index: 2;
+  filter: drop-shadow(0 0 12px var(--blue-accent));
+  animation: floatHolo 3s ease-in-out infinite;
+}
+
+.holo-beam {
+  position: absolute;
+  bottom: 25px;
+  width: 80px;
+  height: 60px;
+  background: linear-gradient(to top, var(--glow-color), transparent);
+  clip-path: polygon(20% 100%, 80% 100%, 100% 0%, 0% 0%);
+  opacity: 0.6;
+}
+
+@keyframes rotateCore {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes floatHolo {
+  0%, 100% { transform: translateY(-5px); }
+  50% { transform: translateY(5px); }
+}
+
+/* CONSOLE LOG */
+.console-box {
+  width: 90%;
+  max-width: 400px;
+  height: 120px;
+  background: rgba(9, 2, 26, 0.9);
+  border: 1px solid var(--purple-accent);
+  border-radius: 12px;
+  padding: 12px;
+  overflow-y: auto;
+  font-size: 0.85rem;
+  margin-bottom: 15px;
+  box-shadow: inset 0 0 10px #000;
+}
+
+/* BUTTONS */
+.btn {
+  background: var(--panel-bg);
+  border: 1px solid var(--purple-accent);
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(128, 34, 255, 0.2);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  width: 90%;
+  max-width: 400px;
+}
+
+/* GAME SECTION */
+#gameSection {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+}
+
+canvas {
+  border: 2px solid var(--purple-accent);
+  background: #050110;
+  border-radius: 10px;
+}
